@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halal Mortgage Comparison — ZakatCalc</title>
+<meta name="description" content="Halal mortgage comparison calculator. Compare conventional mortgage with Murabaha and Ijara Islamic financing. Free tool.">
+<meta property="og:title" content="Halal Mortgage Comparison — ZakatCalc">
+<meta property="og:description" content="Halal mortgage comparison calculator. Compare conventional mortgage with Murabaha and Ijara Islamic financing. Free tool.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://thehivemakes.github.io/hive-zakat-calc/halal-mortgage.html">
+<link rel="stylesheet" href="style.css">
+<script src="js/calc-core.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Halal Mortgage Comparison",
+  "url": "https://thehivemakes.github.io/hive-zakat-calc/halal-mortgage.html",
+  "description": "Halal mortgage comparison calculator. Compare conventional mortgage with Murabaha and Ijara Islamic financing. Free tool.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+}
+</script>
+</head>
+<body>
+<header><div class="header-inner"><div class="logo">Zakat<span>Calc</span></div><div class="tagline">Free Islamic finance calculators</div></div></header>
+<nav><div class="nav-inner"><a href="index.html">ZakatCalc</a><span class="sep">/</span><span>Halal Mortgage Comparison</span></div></nav>
+<main>
+  <div class="ad-leaderboard" id="ad-top">Ad</div>
+  <div class="card">
+    <h1>Halal Mortgage Comparison</h1>
+    <p class="subtitle">Enter home price and terms to compare conventional vs. Murabaha/Ijara financing.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="home_price">Home price ($)</label>
+        <input type="number" id="home_price" step="1000" placeholder="350000">
+      </div>
+      <div class="field">
+        <label for="down_pct">Down payment (%)</label>
+        <input type="number" id="down_pct" step="1" placeholder="20" value="20">
+      </div>
+      <div class="field">
+        <label for="conv_rate">Conventional mortgage rate (%)</label>
+        <input type="number" id="conv_rate" step="0.125" placeholder="6.5">
+      </div>
+      <div class="field">
+        <label for="islamic_rate">Islamic financing profit rate (%)</label>
+        <input type="number" id="islamic_rate" step="0.125" placeholder="7.0">
+      </div>
+      <div class="field">
+        <label for="hm_term">Term (years)</label>
+        <input type="number" id="hm_term" step="5" placeholder="30" value="30">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calculate()">Calculate</button>
+    <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+    <div class="result" id="result">
+      <div class="result-row">
+        <span class="result-label">Amount financed</span>
+        <span class="result-value" id="hm-financed">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Conventional monthly payment</span>
+        <span class="result-value" id="hm-conv-monthly">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Conventional total paid</span>
+        <span class="result-value" id="hm-conv-total">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Islamic financing monthly</span>
+        <span class="result-value" id="hm-islam-monthly">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Islamic financing total</span>
+        <span class="result-value" id="hm-islam-total">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Monthly difference</span>
+        <span class="result-value" id="hm-diff">—</span>
+      </div>
+      <div class="result-note">Conventional: uses compound interest (amortization). Islamic: Murabaha uses cost-plus (no compounding). Actual Islamic financing products vary — consult a Sharia-compliant lender for exact terms.</div>
+    </div>
+  </div>
+
+  <div class="ad-rectangle" id="ad-mid">Ad</div>
+  <div class="seo-section">
+    <h2>Comparing Conventional and Islamic Home Financing</h2>
+    <p>Islamic home financing avoids interest (riba) by structuring the transaction as a sale (Murabaha) or lease-to-own (Ijara). The total cost may be similar to conventional mortgages, but the structure is fundamentally different.</p>
+    <p>In Murabaha home financing, the bank buys the property and sells it to you at cost plus profit, payable in installments. The total price is fixed and does not compound. In Ijara, you lease the property with an option to purchase at the end.</p>
+  </div>
+</main>
+<footer>Free Islamic finance calculators. No signup, no tracking. Consult a qualified Islamic scholar for rulings on your specific situation.<br>Built by <a href="https://thehivemakes.github.io/" style="color:var(--accent)">The Hive</a></footer>
+<script>
+
+function calculate() {
+  const price = CalcCore.get('home_price');
+  const down = CalcCore.get('down_pct') / 100;
+  const convRate = CalcCore.get('conv_rate') / 100;
+  const islamRate = CalcCore.get('islamic_rate') / 100;
+  const years = CalcCore.get('hm_term');
+  if (isNaN(price)||isNaN(convRate)||isNaN(islamRate)||isNaN(years)||price<=0||years<=0) return;
+
+  const financed = price * (1 - down);
+  const months = years * 12;
+
+  // Conventional: standard amortization
+  const r = convRate / 12;
+  const convMonthly = financed * (r * Math.pow(1+r, months)) / (Math.pow(1+r, months) - 1);
+  const convTotal = convMonthly * months;
+
+  // Islamic Murabaha: cost-plus, no compounding
+  const islamProfit = financed * islamRate * years;
+  const islamTotal = financed + islamProfit;
+  const islamMonthly = islamTotal / months;
+
+  CalcCore.set('hm-financed', '$' + CalcCore.fmtInt(financed));
+  CalcCore.set('hm-conv-monthly', '$' + CalcCore.fmt(convMonthly, 2) + '/mo');
+  CalcCore.set('hm-conv-total', '$' + CalcCore.fmtInt(convTotal) + ' total paid');
+  CalcCore.set('hm-islam-monthly', '$' + CalcCore.fmt(islamMonthly, 2) + '/mo');
+  CalcCore.set('hm-islam-total', '$' + CalcCore.fmtInt(islamTotal) + ' total paid');
+  const diff = islamMonthly - convMonthly;
+  CalcCore.set('hm-diff', (diff>0?'+':'') + '$' + CalcCore.fmt(diff, 2) + '/mo for Islamic financing');
+  CalcCore.showResult();
+  CalcCore.saveParams(['home_price','down_pct','conv_rate','islamic_rate','hm_term']);
+}
+
+function clearAll() {
+  ["home_price", "down_pct", "conv_rate", "islamic_rate", "hm_term"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = el.defaultValue || '';
+  });
+  document.getElementById('result').classList.remove('visible');
+  history.replaceState(null, '', window.location.pathname);
+}
+
+document.addEventListener('DOMContentLoaded', () => { if (window.location.search) calculate(); });
+</script>
+</body>
+</html>

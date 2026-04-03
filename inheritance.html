@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Islamic Inheritance (Faraid) — ZakatCalc</title>
+<meta name="description" content="Islamic inheritance calculator (Faraid). Enter estate and surviving heirs to find Sharia-compliant distribution shares. Free tool.">
+<meta property="og:title" content="Islamic Inheritance (Faraid) — ZakatCalc">
+<meta property="og:description" content="Islamic inheritance calculator (Faraid). Enter estate and surviving heirs to find Sharia-compliant distribution shares. Free tool.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://thehivemakes.github.io/hive-zakat-calc/inheritance.html">
+<link rel="stylesheet" href="style.css">
+<script src="js/calc-core.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Islamic Inheritance (Faraid)",
+  "url": "https://thehivemakes.github.io/hive-zakat-calc/inheritance.html",
+  "description": "Islamic inheritance calculator (Faraid). Enter estate and surviving heirs to find Sharia-compliant distribution shares. Free tool.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+}
+</script>
+</head>
+<body>
+<header><div class="header-inner"><div class="logo">Zakat<span>Calc</span></div><div class="tagline">Free Islamic finance calculators</div></div></header>
+<nav><div class="nav-inner"><a href="index.html">ZakatCalc</a><span class="sep">/</span><span>Islamic Inheritance (Faraid)</span></div></nav>
+<main>
+  <div class="ad-leaderboard" id="ad-top">Ad</div>
+  <div class="card">
+    <h1>Islamic Inheritance (Faraid)</h1>
+    <p class="subtitle">Enter estate value and surviving heirs to calculate Faraid shares.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="estate">Net estate value ($)</label>
+        <input type="number" id="estate" step="100" placeholder="100000">
+      </div>
+      <div class="field">
+        <label for="has_spouse">Surviving spouse?</label>
+        <select id="has_spouse"><option value="none">None</option><option value="husband">Husband</option><option value="wife">Wife</option></select>
+      </div>
+      <div class="field">
+        <label for="sons">Number of sons</label>
+        <input type="number" id="sons" min="0" step="1" placeholder="0" value="0">
+      </div>
+      <div class="field">
+        <label for="daughters">Number of daughters</label>
+        <input type="number" id="daughters" min="0" step="1" placeholder="0" value="0">
+      </div>
+      <div class="field">
+        <label for="has_father">Father alive?</label>
+        <select id="has_father"><option value="0">No</option><option value="1">Yes</option></select>
+      </div>
+      <div class="field">
+        <label for="has_mother">Mother alive?</label>
+        <select id="has_mother"><option value="0">No</option><option value="1">Yes</option></select>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calculate()">Calculate</button>
+    <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+    <div class="result" id="result">
+      <div class="result-row">
+        <span class="result-label">Spouse share</span>
+        <span class="result-value" id="inh-spouse">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Father share</span>
+        <span class="result-value" id="inh-father">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Mother share</span>
+        <span class="result-value" id="inh-mother">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Children share</span>
+        <span class="result-value" id="inh-children">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Total distributed</span>
+        <span class="result-value" id="inh-total">—</span>
+      </div>
+      <div class="result-note">DISCLAIMER: Islamic inheritance law is complex. This calculator handles common cases only. Edge cases (e.g., multiple wives, grandchildren, siblings) require a qualified scholar. This is for educational purposes.</div>
+    </div>
+  </div>
+
+  <div class="ad-rectangle" id="ad-mid">Ad</div>
+  <div class="seo-section">
+    <h2>Islamic Inheritance Law (Faraid) Basics</h2>
+    <p>Faraid is the Islamic system of inheritance distribution prescribed in the Quran. Fixed shares are assigned to specific heirs (spouse, parents, children), with the remainder going to residuary heirs.</p>
+    <p>This calculator handles the most common family structures. For complex cases involving grandchildren, siblings, half-siblings, or multiple marriages, consult a qualified Islamic scholar or Faraid specialist.</p>
+  </div>
+</main>
+<footer>Free Islamic finance calculators. No signup, no tracking. Consult a qualified Islamic scholar for rulings on your specific situation.<br>Built by <a href="https://thehivemakes.github.io/" style="color:var(--accent)">The Hive</a></footer>
+<script>
+
+function calculate() {
+  const estate = CalcCore.get('estate');
+  const spouse = CalcCore.getSelect('has_spouse');
+  const sons = CalcCore.get('sons') || 0;
+  const daughters = CalcCore.get('daughters') || 0;
+  const father = parseInt(CalcCore.getSelect('has_father'));
+  const mother = parseInt(CalcCore.getSelect('has_mother'));
+  if (isNaN(estate)||estate<=0) return;
+
+  let remaining = estate;
+  let spouseShare = 0, fatherShare = 0, motherShare = 0, childrenShare = 0;
+  const hasChildren = sons > 0 || daughters > 0;
+
+  // Spouse share
+  if (spouse === 'wife') {
+    spouseShare = hasChildren ? estate * (1/8) : estate * (1/4);
+  } else if (spouse === 'husband') {
+    spouseShare = hasChildren ? estate * (1/4) : estate * (1/2);
+  }
+  remaining -= spouseShare;
+
+  // Father share
+  if (father) {
+    if (hasChildren) fatherShare = estate * (1/6);
+    else fatherShare = remaining; // residuary if no children
+    remaining -= fatherShare;
+  }
+
+  // Mother share
+  if (mother) {
+    if (hasChildren) motherShare = estate * (1/6);
+    else if (!father) motherShare = estate * (1/3);
+    else motherShare = remaining * (1/3);
+    remaining -= motherShare;
+  }
+
+  // Children share (remainder)
+  childrenShare = Math.max(0, remaining);
+
+  let childDetail = '';
+  if (sons > 0 && daughters > 0) {
+    const shares = sons * 2 + daughters;
+    const perSon = (childrenShare * 2) / shares;
+    const perDaughter = childrenShare / shares;
+    childDetail = sons + ' son(s) @ $' + CalcCore.fmt(perSon,2) + ' each, ' + daughters + ' daughter(s) @ $' + CalcCore.fmt(perDaughter,2) + ' each (2:1 ratio)';
+  } else if (sons > 0) {
+    childDetail = sons + ' son(s) @ $' + CalcCore.fmt(childrenShare/sons,2) + ' each';
+  } else if (daughters > 0) {
+    childDetail = daughters + ' daughter(s) @ $' + CalcCore.fmt(childrenShare/daughters,2) + ' each';
+  }
+
+  CalcCore.set('inh-spouse', spouse !== 'none' ? '$' + CalcCore.fmt(spouseShare,2) : 'N/A');
+  CalcCore.set('inh-father', father ? '$' + CalcCore.fmt(fatherShare,2) : 'N/A');
+  CalcCore.set('inh-mother', mother ? '$' + CalcCore.fmt(motherShare,2) : 'N/A');
+  CalcCore.set('inh-children', hasChildren ? '$' + CalcCore.fmt(childrenShare,2) + ' (' + childDetail + ')' : 'N/A');
+  CalcCore.set('inh-total', '$' + CalcCore.fmt(spouseShare+fatherShare+motherShare+childrenShare,2));
+  CalcCore.showResult();
+  CalcCore.saveParams(['estate','has_spouse','sons','daughters','has_father','has_mother']);
+}
+
+function clearAll() {
+  ["estate", "has_spouse", "sons", "daughters", "has_father", "has_mother"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = el.defaultValue || '';
+  });
+  document.getElementById('result').classList.remove('visible');
+  history.replaceState(null, '', window.location.pathname);
+}
+
+document.addEventListener('DOMContentLoaded', () => { if (window.location.search) calculate(); });
+</script>
+</body>
+</html>

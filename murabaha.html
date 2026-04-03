@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Murabaha Profit Calculator — ZakatCalc</title>
+<meta name="description" content="Murabaha calculator. Find total cost, profit margin, and monthly payment for Islamic cost-plus financing. Free tool.">
+<meta property="og:title" content="Murabaha Profit Calculator — ZakatCalc">
+<meta property="og:description" content="Murabaha calculator. Find total cost, profit margin, and monthly payment for Islamic cost-plus financing. Free tool.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://thehivemakes.github.io/hive-zakat-calc/murabaha.html">
+<link rel="stylesheet" href="style.css">
+<script src="js/calc-core.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Murabaha Profit Calculator",
+  "url": "https://thehivemakes.github.io/hive-zakat-calc/murabaha.html",
+  "description": "Murabaha calculator. Find total cost, profit margin, and monthly payment for Islamic cost-plus financing. Free tool.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+}
+</script>
+</head>
+<body>
+<header><div class="header-inner"><div class="logo">Zakat<span>Calc</span></div><div class="tagline">Free Islamic finance calculators</div></div></header>
+<nav><div class="nav-inner"><a href="index.html">ZakatCalc</a><span class="sep">/</span><span>Murabaha Profit Calculator</span></div></nav>
+<main>
+  <div class="ad-leaderboard" id="ad-top">Ad</div>
+  <div class="card">
+    <h1>Murabaha Profit Calculator</h1>
+    <p class="subtitle">Enter purchase price, profit margin, and payment terms.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="purchase_price">Asset purchase price ($)</label>
+        <input type="number" id="purchase_price" step="100" placeholder="25000">
+      </div>
+      <div class="field">
+        <label for="profit_rate">Profit rate (%)</label>
+        <input type="number" id="profit_rate" step="0.1" placeholder="5.0">
+      </div>
+      <div class="field">
+        <label for="term_months">Payment term (months)</label>
+        <input type="number" id="term_months" step="1" placeholder="60">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calculate()">Calculate</button>
+    <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+    <div class="result" id="result">
+      <div class="result-row">
+        <span class="result-label">Total profit</span>
+        <span class="result-value" id="mur-profit">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Total sale price</span>
+        <span class="result-value" id="mur-total">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Monthly payment</span>
+        <span class="result-value" id="mur-monthly">—</span>
+      </div>
+      <div class="result-note">Murabaha is a Sharia-compliant sale where the bank buys the asset and sells it to you at cost plus an agreed profit margin. The total price is fixed upfront — no interest.</div>
+    </div>
+  </div>
+
+  <div class="ad-rectangle" id="ad-mid">Ad</div>
+  <div class="seo-section">
+    <h2>How Murabaha Financing Works</h2>
+    <p>Murabaha is a cost-plus financing arrangement permitted under Islamic law. The financier purchases the asset and sells it to the buyer at the original cost plus an agreed profit margin, payable in installments.</p>
+    <p>Unlike conventional loans, the profit is fixed at the time of the contract. There is no compounding interest. The total amount owed never increases, even if payments are late (though late fees may apply as a penalty donated to charity).</p>
+  </div>
+</main>
+<footer>Free Islamic finance calculators. No signup, no tracking. Consult a qualified Islamic scholar for rulings on your specific situation.<br>Built by <a href="https://thehivemakes.github.io/" style="color:var(--accent)">The Hive</a></footer>
+<script>
+
+function calculate() {
+  const price = CalcCore.get('purchase_price');
+  const rate = CalcCore.get('profit_rate') / 100;
+  const months = CalcCore.get('term_months');
+  if (isNaN(price)||isNaN(rate)||isNaN(months)||price<=0||months<=0) return;
+
+  const profit = price * rate;
+  const total = price + profit;
+  const monthly = total / months;
+
+  CalcCore.set('mur-profit', '$' + CalcCore.fmt(profit, 2));
+  CalcCore.set('mur-total', '$' + CalcCore.fmt(total, 2));
+  CalcCore.set('mur-monthly', '$' + CalcCore.fmt(monthly, 2) + '/month');
+  CalcCore.showResult();
+  CalcCore.saveParams(['purchase_price','profit_rate','term_months']);
+}
+
+function clearAll() {
+  ["purchase_price", "profit_rate", "term_months"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = el.defaultValue || '';
+  });
+  document.getElementById('result').classList.remove('visible');
+  history.replaceState(null, '', window.location.pathname);
+}
+
+document.addEventListener('DOMContentLoaded', () => { if (window.location.search) calculate(); });
+</script>
+</body>
+</html>

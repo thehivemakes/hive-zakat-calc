@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zakat Calculator — ZakatCalc</title>
+<meta name="description" content="Zakat calculator. Enter cash, gold, silver, investments to find your annual Zakat obligation. Nisab threshold included. Free Islamic finance tool.">
+<meta property="og:title" content="Zakat Calculator — ZakatCalc">
+<meta property="og:description" content="Zakat calculator. Enter cash, gold, silver, investments to find your annual Zakat obligation. Nisab threshold included. Free Islamic finance tool.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://thehivemakes.github.io/hive-zakat-calc/zakat.html">
+<link rel="stylesheet" href="style.css">
+<script src="js/calc-core.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Zakat Calculator",
+  "url": "https://thehivemakes.github.io/hive-zakat-calc/zakat.html",
+  "description": "Zakat calculator. Enter cash, gold, silver, investments to find your annual Zakat obligation. Nisab threshold included. Free Islamic finance tool.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any"
+}
+</script>
+</head>
+<body>
+<header><div class="header-inner"><div class="logo">Zakat<span>Calc</span></div><div class="tagline">Free Islamic finance calculators</div></div></header>
+<nav><div class="nav-inner"><a href="index.html">ZakatCalc</a><span class="sep">/</span><span>Zakat Calculator</span></div></nav>
+<main>
+  <div class="ad-leaderboard" id="ad-top">Ad</div>
+  <div class="card">
+    <h1>Zakat Calculator</h1>
+    <p class="subtitle">Enter your assets to calculate Zakat due. Rate: 2.5% of eligible wealth above nisab.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="cash">Cash & bank balances ($)</label>
+        <input type="number" id="cash" step="100" placeholder="10000">
+      </div>
+      <div class="field">
+        <label for="gold_val">Gold value ($)</label>
+        <input type="number" id="gold_val" step="100" placeholder="5000">
+      </div>
+      <div class="field">
+        <label for="silver_val">Silver value ($)</label>
+        <input type="number" id="silver_val" step="100" placeholder="0">
+      </div>
+      <div class="field">
+        <label for="investments">Investments & stocks ($)</label>
+        <input type="number" id="investments" step="100" placeholder="15000">
+      </div>
+      <div class="field">
+        <label for="business">Business inventory ($)</label>
+        <input type="number" id="business" step="100" placeholder="0">
+      </div>
+      <div class="field">
+        <label for="debts">Short-term debts to subtract ($)</label>
+        <input type="number" id="debts" step="100" placeholder="2000">
+      </div>
+      <div class="field">
+        <label for="nisab_gold">Current gold price per gram ($)</label>
+        <input type="number" id="nisab_gold" step="0.01" placeholder="75" value="75">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="calculate()">Calculate</button>
+    <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+    <div class="result" id="result">
+      <div class="result-row">
+        <span class="result-label">Total zakatable wealth</span>
+        <span class="result-value" id="z-total">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Nisab threshold (85g gold)</span>
+        <span class="result-value" id="z-nisab">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Eligible for Zakat?</span>
+        <span class="result-value" id="z-eligible">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Zakat due (2.5%)</span>
+        <span class="result-value" id="z-amount">—</span>
+      </div>
+      <div class="result-note">Zakat rate: 2.5% of net zakatable wealth held for one lunar year, if above nisab. Nisab = value of 85 grams of gold OR 595 grams of silver (use the lower). Gold nisab is most commonly used.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:12px;">Zakatable Asset Categories</h2>
+    <table class="ref-table" id="ref-table">
+      <thead><tr><th>Asset</th><th>Zakatable?</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Cash & savings</td><td>Yes</td><td>All cash held for one lunar year</td></tr>
+        <tr><td>Gold & silver</td><td>Yes</td><td>Personal jewelry varies by madhab</td></tr>
+        <tr><td>Stocks & investments</td><td>Yes</td><td>Market value at Zakat date</td></tr>
+        <tr><td>Business inventory</td><td>Yes</td><td>Items held for sale</td></tr>
+        <tr><td>Primary home</td><td>No</td><td>Personal use assets exempt</td></tr>
+        <tr><td>Personal vehicle</td><td>No</td><td>Personal use assets exempt</td></tr>
+        <tr><td>Debts owed to you</td><td>Yes</td><td>If collectible within the year</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ad-rectangle" id="ad-mid">Ad</div>
+  <div class="seo-section">
+    <h2>How to Calculate Zakat</h2>
+    <p>Zakat is one of the Five Pillars of Islam. It is an annual obligation to give 2.5% of your net wealth to those in need, provided your wealth exceeds the nisab threshold.</p>
+    <p>The nisab is the minimum amount of wealth that makes Zakat obligatory. It is equivalent to 85 grams of gold or 595 grams of silver. Most scholars recommend using the gold nisab. Your wealth must have been held for one full lunar year (hawl).</p>
+    <p>Add up all zakatable assets (cash, gold, silver, investments, business inventory), subtract short-term debts, and if the total exceeds nisab, pay 2.5% of the total.</p>
+  </div>
+</main>
+<footer>Free Islamic finance calculators. No signup, no tracking. Consult a qualified Islamic scholar for rulings on your specific situation.<br>Built by <a href="https://thehivemakes.github.io/" style="color:var(--accent)">The Hive</a></footer>
+<script>
+
+function calculate() {
+  const cash = CalcCore.get('cash') || 0;
+  const gold = CalcCore.get('gold_val') || 0;
+  const silver = CalcCore.get('silver_val') || 0;
+  const invest = CalcCore.get('investments') || 0;
+  const biz = CalcCore.get('business') || 0;
+  const debts = CalcCore.get('debts') || 0;
+  const goldPrice = CalcCore.get('nisab_gold') || 75;
+
+  const totalWealth = cash + gold + silver + invest + biz - debts;
+  const nisab = goldPrice * 85;
+  const eligible = totalWealth >= nisab;
+  const zakatDue = eligible ? totalWealth * 0.025 : 0;
+
+  CalcCore.set('z-total', '$' + CalcCore.fmt(totalWealth, 2));
+  CalcCore.set('z-nisab', '$' + CalcCore.fmt(nisab, 2) + ' (85g gold at $' + CalcCore.fmt(goldPrice,2) + '/g)');
+  CalcCore.set('z-eligible', eligible ? 'Yes \u2014 wealth exceeds nisab' : 'No \u2014 wealth below nisab (Zakat not obligatory)');
+  CalcCore.set('z-amount', eligible ? '$' + CalcCore.fmt(zakatDue, 2) : '$0.00 (below nisab)');
+  CalcCore.showResult();
+  CalcCore.saveParams(['cash','gold_val','silver_val','investments','business','debts','nisab_gold']);
+}
+
+function clearAll() {
+  ["cash", "gold_val", "silver_val", "investments", "business", "debts", "nisab_gold"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = el.defaultValue || '';
+  });
+  document.getElementById('result').classList.remove('visible');
+  history.replaceState(null, '', window.location.pathname);
+}
+
+document.addEventListener('DOMContentLoaded', () => { if (window.location.search) calculate(); });
+</script>
+</body>
+</html>
