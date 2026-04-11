@@ -33,3 +33,19 @@ const CalcCore = {
   getSelect(id) { const el = document.getElementById(id); return el ? el.value : ''; }
 };
 document.addEventListener('DOMContentLoaded', () => CalcCore.loadParams());
+
+/* Theme toggle — default dark */
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
