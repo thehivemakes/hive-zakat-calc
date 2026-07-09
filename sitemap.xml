@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://thehivemakes.github.io/hive-zakat-calc/</loc><priority>1.0</priority></url>
-  <url><loc>https://thehivemakes.github.io/hive-zakat-calc/zakat.html</loc><priority>0.8</priority></url>
-  <url><loc>https://thehivemakes.github.io/hive-zakat-calc/murabaha.html</loc><priority>0.8</priority></url>
-  <url><loc>https://thehivemakes.github.io/hive-zakat-calc/sukuk.html</loc><priority>0.8</priority></url>
-  <url><loc>https://thehivemakes.github.io/hive-zakat-calc/inheritance.html</loc><priority>0.8</priority></url>
-  <url><loc>https://thehivemakes.github.io/hive-zakat-calc/halal-mortgage.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zakat.thehivemakes.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://zakat.thehivemakes.com/zakat.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zakat.thehivemakes.com/murabaha.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zakat.thehivemakes.com/sukuk.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zakat.thehivemakes.com/inheritance.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zakat.thehivemakes.com/halal-mortgage.html</loc><priority>0.8</priority></url>
 </urlset>
